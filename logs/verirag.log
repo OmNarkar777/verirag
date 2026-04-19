@@ -1,0 +1,59 @@
+2026-04-19 12:55:26.563 | INFO     | backend.main:lifespan:98 - ============================================================
+2026-04-19 12:55:26.564 | INFO     | backend.main:lifespan:99 - VeriRAG starting | env=development | log=DEBUG
+2026-04-19 12:55:26.565 | INFO     | backend.main:lifespan:100 - Groq model: llama-3.3-70b-versatile
+2026-04-19 12:55:26.566 | INFO     | backend.main:lifespan:101 - Embedding model: all-MiniLM-L6-v2
+2026-04-19 12:55:26.566 | INFO     | backend.main:lifespan:104 - Warming up embedding model...
+2026-04-19 12:55:31.279 | INFO     | backend.rag.vectorstore:__init__:61 - VectorStoreManager initialized | model=all-MiniLM-L6-v2 | persist_dir=./chroma_db
+2026-04-19 12:55:31.280 | INFO     | backend.main:lifespan:107 - VectorStore initialized ✓
+2026-04-19 12:55:31.280 | INFO     | backend.main:lifespan:112 - Warming up RAG pipeline...
+2026-04-19 12:55:33.543 | INFO     | backend.rag.vectorstore:__init__:61 - VectorStoreManager initialized | model=all-MiniLM-L6-v2 | persist_dir=./chroma_db
+2026-04-19 12:55:34.475 | INFO     | backend.main:lifespan:115 - RAG pipeline initialized ✓
+2026-04-19 12:55:34.476 | INFO     | backend.main:lifespan:120 - Warming up RAGAS runner...
+2026-04-19 12:55:37.220 | INFO     | backend.evaluator.ragas_runner:__init__:99 - RagasRunner initialized | judge_model=llama-3.3-70b-versatile
+2026-04-19 12:55:37.220 | INFO     | backend.main:lifespan:123 - RAGAS runner initialized ✓
+2026-04-19 12:55:37.221 | INFO     | backend.main:lifespan:128 - Checking database connectivity...
+2026-04-19 12:55:37.299 | INFO     | backend.main:lifespan:132 - PostgreSQL connected ✓
+2026-04-19 12:55:37.300 | INFO     | backend.main:lifespan:136 - VeriRAG startup complete ✓
+2026-04-19 12:55:37.300 | INFO     | backend.main:lifespan:137 - ============================================================
+2026-04-19 12:58:46.465 | INFO     | backend.main:lifespan:142 - VeriRAG shutting down...
+2026-04-19 12:58:46.473 | INFO     | backend.main:lifespan:144 - Database connection pool disposed ✓
+2026-04-19 12:58:46.473 | INFO     | backend.main:lifespan:145 - Shutdown complete.
+2026-04-19 16:35:45.414 | INFO     | backend.main:lifespan:98 - ============================================================
+2026-04-19 16:35:45.414 | INFO     | backend.main:lifespan:99 - VeriRAG starting | env=development | log=DEBUG
+2026-04-19 16:35:45.416 | INFO     | backend.main:lifespan:100 - Groq model: llama-3.3-70b-versatile
+2026-04-19 16:35:45.417 | INFO     | backend.main:lifespan:101 - Embedding model: all-MiniLM-L6-v2
+2026-04-19 16:35:45.418 | INFO     | backend.main:lifespan:104 - Warming up embedding model...
+2026-04-19 16:35:52.022 | INFO     | backend.rag.vectorstore:__init__:61 - VectorStoreManager initialized | model=all-MiniLM-L6-v2 | persist_dir=./chroma_db
+2026-04-19 16:35:52.024 | INFO     | backend.main:lifespan:107 - VectorStore initialized ✓
+2026-04-19 16:35:52.028 | INFO     | backend.main:lifespan:112 - Warming up RAG pipeline...
+2026-04-19 16:35:53.657 | INFO     | backend.main:lifespan:115 - RAG pipeline initialized ✓
+2026-04-19 16:35:53.657 | INFO     | backend.main:lifespan:120 - Warming up RAGAS runner...
+2026-04-19 16:35:57.771 | INFO     | backend.evaluator.ragas_runner:__init__:42 - RagasRunner initialized | judge_model=llama-3.3-70b-versatile
+2026-04-19 16:35:57.771 | INFO     | backend.main:lifespan:123 - RAGAS runner initialized ✓
+2026-04-19 16:35:57.775 | INFO     | backend.main:lifespan:128 - Checking database connectivity...
+2026-04-19 16:35:57.923 | INFO     | backend.main:lifespan:132 - PostgreSQL connected ✓
+2026-04-19 16:35:57.924 | INFO     | backend.main:lifespan:136 - VeriRAG startup complete ✓
+2026-04-19 16:35:57.926 | INFO     | backend.main:lifespan:137 - ============================================================
+2026-04-19 16:39:04.572 | INFO     | backend.rag.vectorstore:ingest_text:141 - Ingested document | filename=test-corpus.txt | chunks=1 | collection=verirag_docs
+2026-04-19 16:39:10.260 | INFO     | backend.services.langsmith_service:__init__:17 - LangSmith connected | project=verirag
+2026-04-19 16:39:10.457 | INFO     | backend.rag.pipeline:query:61 - RAG query | question=What is self-attention?
+2026-04-19 16:39:12.721 | ERROR    | backend.routers.pipeline:query_pipeline:223 - Pipeline query failed | question=What is self-attention? | error=Invalid format specifier '.3f if chunks else 0' for object of type 'float'
+2026-04-19 16:39:18.423 | INFO     | backend.evaluator.ragas_runner:create_eval_run:90 - Created EvalRun | id=cf2bca60-c4a2-494a-8e65-1043665e631d | version=v1.0.0-baseline
+2026-04-19 16:39:18.430 | INFO     | backend.services.eval_service:start_eval_run:64 - EvalRun created | id=cf2bca60-c4a2-494a-8e65-1043665e631d
+2026-04-19 16:39:18.438 | INFO     | backend.evaluator.ragas_runner:run_evaluation:94 - Starting RAGAS evaluation | run_id=cf2bca60-c4a2-494a-8e65-1043665e631d | cases=10
+2026-04-19 16:39:18.492 | INFO     | backend.evaluator.dataset_builder:build_ragas_dataset:226 - Built RAGAS dataset | rows=10
+2026-04-19 16:39:18.494 | INFO     | backend.evaluator.ragas_runner:run_evaluation:99 - Running RAGAS evaluate() in thread pool â€” may take several minutes...
+2026-04-19 16:39:23.198 | INFO     | backend.evaluator.ragas_runner:create_eval_run:90 - Created EvalRun | id=d6e97d55-dbeb-44dc-989b-3adae0ff431f | version=v1.1.0-test
+2026-04-19 16:39:23.209 | INFO     | backend.services.eval_service:start_eval_run:64 - EvalRun created | id=d6e97d55-dbeb-44dc-989b-3adae0ff431f
+2026-04-19 16:39:23.212 | INFO     | backend.evaluator.ragas_runner:run_evaluation:94 - Starting RAGAS evaluation | run_id=d6e97d55-dbeb-44dc-989b-3adae0ff431f | cases=10
+2026-04-19 16:39:23.229 | INFO     | backend.evaluator.dataset_builder:build_ragas_dataset:226 - Built RAGAS dataset | rows=10
+2026-04-19 16:39:23.231 | INFO     | backend.evaluator.ragas_runner:run_evaluation:99 - Running RAGAS evaluate() in thread pool â€” may take several minutes...
+2026-04-19 16:41:17.949 | ERROR    | backend.evaluator.ragas_runner:run_evaluation:125 - RAGAS evaluation failed | run_id=cf2bca60-c4a2-494a-8e65-1043665e631d | error=The runner thread which was running the jobs raised an exeception. Read the traceback above to debug it. You can also pass `raise_exceptions=False` incase you want to show only a warning message instead.
+2026-04-19 16:41:17.974 | WARNING  | backend.evaluator.ragas_runner:_fail_eval_run:222 - EvalRun marked failed | id=cf2bca60-c4a2-494a-8e65-1043665e631d
+2026-04-19 16:41:17.995 | ERROR    | backend.services.eval_service:execute_evaluation:86 - Background eval task failed | run_id=cf2bca60-c4a2-494a-8e65-1043665e631d | error=The runner thread which was running the jobs raised an exeception. Read the traceback above to debug it. You can also pass `raise_exceptions=False` incase you want to show only a warning message instead.
+2026-04-19 16:41:46.455 | ERROR    | backend.evaluator.ragas_runner:run_evaluation:125 - RAGAS evaluation failed | run_id=d6e97d55-dbeb-44dc-989b-3adae0ff431f | error=The runner thread which was running the jobs raised an exeception. Read the traceback above to debug it. You can also pass `raise_exceptions=False` incase you want to show only a warning message instead.
+2026-04-19 16:41:46.478 | WARNING  | backend.evaluator.ragas_runner:_fail_eval_run:222 - EvalRun marked failed | id=d6e97d55-dbeb-44dc-989b-3adae0ff431f
+2026-04-19 16:41:46.522 | ERROR    | backend.services.eval_service:execute_evaluation:86 - Background eval task failed | run_id=d6e97d55-dbeb-44dc-989b-3adae0ff431f | error=The runner thread which was running the jobs raised an exeception. Read the traceback above to debug it. You can also pass `raise_exceptions=False` incase you want to show only a warning message instead.
+2026-04-19 16:41:46.619 | INFO     | backend.main:lifespan:142 - VeriRAG shutting down...
+2026-04-19 16:41:46.630 | INFO     | backend.main:lifespan:144 - Database connection pool disposed ✓
+2026-04-19 16:41:46.632 | INFO     | backend.main:lifespan:145 - Shutdown complete.

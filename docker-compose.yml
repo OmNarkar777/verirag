@@ -1,0 +1,85 @@
+version: "3.9"
+
+# WHY THIS SETUP:
+# - PostgreSQL 15 for JSONB performance improvements + logical replication (prod-ready)
+# - pgAdmin for visual DB inspection during development — invaluable for debugging
+#   complex JSONB eval metadata
+# - Named volumes persist data across container restarts
+# - healthcheck ensures app doesn't start before DB is ready (common race condition)
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: verirag_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: verirag
+      POSTGRES_PASSWORD: verirag_secret
+      POSTGRES_DB: verirag
+      # Tune PostgreSQL for eval workload: lots of JSON reads, moderate writes
+      POSTGRES_INITDB_ARGS: "--encoding=UTF8 --locale=C"
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./scripts/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U verirag -d verirag"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+    networks:
+      - verirag_net
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: verirag_pgadmin
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@verirag.local
+      PGADMIN_DEFAULT_PASSWORD: admin
+      PGADMIN_CONFIG_SERVER_MODE: "False"   # single-user mode for dev
+    ports:
+      - "5050:80"
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - verirag_net
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: verirag_app
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      # Override DB URL to use container hostname instead of localhost
+      DATABASE_URL: postgresql+asyncpg://verirag:verirag_secret@postgres:5432/verirag
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app/backend           # hot-reload in dev
+      - chroma_data:/app/chroma_data
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - verirag_net
+    command: >
+      sh -c "alembic upgrade head &&
+             uvicorn backend.main:app --host 0.0.0.0 --port 8000 --reload"
+
+volumes:
+  postgres_data:
+  pgadmin_data:
+  chroma_data:
+
+networks:
+  verirag_net:
+    driver: bridge

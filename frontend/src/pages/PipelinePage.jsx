@@ -1,0 +1,121 @@
+﻿/**
+ * PipelinePage â€” two-panel layout: document ingestion + RAG query interface.
+ */
+import { useState } from 'react'
+import { startEvalRun } from '../api/client.js'
+import { useStartSampleEval } from '../hooks/useEvalRuns.js'
+import IngestPanel from '../components/pipeline/IngestPanel.jsx'
+import QueryPanel from '../components/pipeline/QueryPanel.jsx'
+
+export default function PipelinePage() {
+  const [evalCase, setEvalCase] = useState(null)
+  const [groundTruth, setGroundTruth] = useState('')
+  const [versionTag, setVersionTag] = useState('v1.0.0-live')
+  const [submitted, setSubmitted] = useState(false)
+  const [submitError, setSubmitError] = useState('')
+  const startSample = useStartSampleEval()
+
+  const handleEvalCase = (c) => {
+    setEvalCase(c)
+    setSubmitted(false)
+    setSubmitError('')
+    setTimeout(() => document.getElementById('eval-form')?.scrollIntoView({ behavior: 'smooth' }), 100)
+  }
+
+  const handleSubmitEval = async () => {
+    if (!evalCase || !groundTruth.trim()) return
+    try {
+      await startEvalRun({
+        version_tag: versionTag,
+        pipeline_name: 'live-query-eval',
+        test_cases: [{ ...evalCase, ground_truth: groundTruth }],
+        metadata: { source: 'pipeline_query_panel' },
+      })
+      setSubmitted(true)
+      setEvalCase(null)
+      setGroundTruth('')
+    } catch (e) {
+      setSubmitError(e.message)
+    }
+  }
+
+  return (
+    <div className="p-6 max-w-7xl space-y-6">
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+        <div>
+          <h2 className="text-xs font-medium text-slate-500 uppercase tracking-wider mb-3">Document Ingestion</h2>
+          <IngestPanel />
+        </div>
+        <div>
+          <h2 className="text-xs font-medium text-slate-500 uppercase tracking-wider mb-3">Query Pipeline</h2>
+          <QueryPanel onEvalCase={handleEvalCase} />
+        </div>
+      </div>
+
+      {evalCase && (
+        <div id="eval-form" className="glass rounded-xl p-5">
+          <h3 className="text-sm font-semibold text-slate-200 mb-1">Evaluate this Query</h3>
+          <p className="text-xs text-slate-500 mb-4">Add a ground truth and submit to create a 1-case eval run.</p>
+          <div className="space-y-3">
+            <div>
+              <label className="text-xs text-slate-500 block mb-1">Question</label>
+              <div className="bg-slate-800 rounded-lg px-3 py-2 text-xs text-slate-300 border border-slate-700">{evalCase.question}</div>
+            </div>
+            <div>
+              <label className="text-xs text-slate-500 block mb-1">Ground Truth <span className="text-red-400">*</span></label>
+              <textarea
+                value={groundTruth}
+                onChange={(e) => setGroundTruth(e.target.value)}
+                placeholder="The ideal, complete answer to this question..."
+                rows={3}
+                className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-200 placeholder-slate-600 focus:outline-none focus:border-brand-500 resize-none"
+              />
+            </div>
+            <div className="flex items-center gap-3">
+              <div className="flex-1">
+                <label className="text-xs text-slate-500 block mb-1">Version Tag</label>
+                <input
+                  value={versionTag}
+                  onChange={(e) => setVersionTag(e.target.value)}
+                  className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-300 font-mono focus:outline-none focus:border-brand-500"
+                />
+              </div>
+              <button
+                onClick={handleSubmitEval}
+                disabled={!groundTruth.trim()}
+                className="mt-5 px-5 py-2 rounded-lg bg-brand-500 hover:bg-brand-600 text-white text-sm font-medium transition-colors disabled:opacity-50"
+              >
+                Submit Eval
+              </button>
+            </div>
+            {submitError && <p className="text-xs text-red-400">{submitError}</p>}
+          </div>
+        </div>
+      )}
+
+      {submitted && (
+        <div className="rounded-xl border border-emerald-500/30 bg-emerald-500/5 px-4 py-3 text-xs">
+          <p className="text-emerald-400 font-medium">Evaluation started</p>
+          <p className="text-slate-400 mt-1">Check the <a href="/" className="text-brand-400 hover:underline">Dashboard</a> for results.</p>
+        </div>
+      )}
+
+      <div className="glass rounded-xl p-5">
+        <h3 className="text-sm font-semibold text-slate-200 mb-3">Quick Actions</h3>
+        <div className="flex flex-wrap gap-3">
+          <button
+            onClick={() => startSample.mutate('v0.0.1-quick')}
+            disabled={startSample.isPending}
+            className="text-xs border border-slate-700 hover:border-slate-600 text-slate-300 px-4 py-2 rounded-lg transition-colors disabled:opacity-50"
+          >
+            {startSample.isPending ? 'Starting...' : 'Run Sample Evaluation (10 cases)'}
+          </button>
+          <a href="/docs" target="_blank" rel="noreferrer"
+            className="text-xs border border-slate-700 hover:border-slate-600 text-slate-400 px-4 py-2 rounded-lg transition-colors">
+            API Docs
+          </a>
+        </div>
+      </div>
+    </div>
+  )
+}
