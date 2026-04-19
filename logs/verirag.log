@@ -57,3 +57,23 @@
 2026-04-19 16:41:46.619 | INFO     | backend.main:lifespan:142 - VeriRAG shutting down...
 2026-04-19 16:41:46.630 | INFO     | backend.main:lifespan:144 - Database connection pool disposed ✓
 2026-04-19 16:41:46.632 | INFO     | backend.main:lifespan:145 - Shutdown complete.
+2026-04-19 16:42:02.271 | INFO     | backend.main:lifespan:98 - ============================================================
+2026-04-19 16:42:02.271 | INFO     | backend.main:lifespan:99 - VeriRAG starting | env=development | log=DEBUG
+2026-04-19 16:42:02.271 | INFO     | backend.main:lifespan:100 - Groq model: llama-3.3-70b-versatile
+2026-04-19 16:42:02.271 | INFO     | backend.main:lifespan:101 - Embedding model: all-MiniLM-L6-v2
+2026-04-19 16:42:02.281 | INFO     | backend.main:lifespan:104 - Warming up embedding model...
+2026-04-19 16:42:08.739 | INFO     | backend.rag.vectorstore:__init__:61 - VectorStoreManager initialized | model=all-MiniLM-L6-v2 | persist_dir=./chroma_db
+2026-04-19 16:42:08.742 | INFO     | backend.main:lifespan:107 - VectorStore initialized ✓
+2026-04-19 16:42:08.743 | INFO     | backend.main:lifespan:112 - Warming up RAG pipeline...
+2026-04-19 16:42:10.349 | INFO     | backend.main:lifespan:115 - RAG pipeline initialized ✓
+2026-04-19 16:42:10.361 | INFO     | backend.main:lifespan:120 - Warming up RAGAS runner...
+2026-04-19 16:42:14.464 | INFO     | backend.evaluator.ragas_runner:__init__:42 - RagasRunner initialized | judge_model=llama-3.3-70b-versatile
+2026-04-19 16:42:14.467 | INFO     | backend.main:lifespan:123 - RAGAS runner initialized ✓
+2026-04-19 16:42:14.467 | INFO     | backend.main:lifespan:128 - Checking database connectivity...
+2026-04-19 16:42:14.595 | INFO     | backend.main:lifespan:132 - PostgreSQL connected ✓
+2026-04-19 16:42:14.595 | INFO     | backend.main:lifespan:136 - VeriRAG startup complete ✓
+2026-04-19 16:42:14.599 | INFO     | backend.main:lifespan:137 - ============================================================
+2026-04-19 16:42:17.385 | INFO     | backend.rag.vectorstore:ingest_text:141 - Ingested document | filename=pasted-text.txt | chunks=1 | collection=verirag_docs
+2026-04-19 16:42:29.929 | INFO     | backend.services.langsmith_service:__init__:17 - LangSmith connected | project=verirag
+2026-04-19 16:42:30.039 | INFO     | backend.rag.pipeline:query:61 - RAG query | question=What is self-attention?
+2026-04-19 16:42:31.066 | INFO     | backend.rag.pipeline:query:87 - RAG response | chunks=2 | answer_len=320
