@@ -21,20 +21,6 @@
 Running RAGAS once is easy. The hard part is knowing **when a pipeline change made quality worse** — did switching to a new chunking strategy hurt faithfulness? Did adding a reranker drop context recall?
 
 VeriRAG answers this automatically. Every eval run is compared against the previous one. If any metric drops by more than 10 points, a regression is flagged instantly with a before/after breakdown shown on the dashboard.
-
----
-
-## Screenshots
-
-### Dashboard — Metric Trends + Regression Alert
-![Dashboard](screenshots/dashboard.png)
-
-### Run Detail — Per-Case Score Drill-Down
-![Run Detail](screenshots/run_detail.png)
-
-### Pipeline — Ingest + Query Interface
-![Pipeline](screenshots/pipeline.png)
-
 ---
 
 ## Architecture
